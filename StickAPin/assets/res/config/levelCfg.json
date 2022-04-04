@@ -1,0 +1,22 @@
+[
+    {"level":1,"big":3,"small":4,"speed":150,"dir":1},
+    {"level":2,"big":3,"small":5,"speed":150,"dir":-1},
+    {"level":3,"big":4,"small":5,"speed":150,"dir":1},
+    {"level":4,"big":4,"small":6,"speed":150,"dir":-1},
+    {"level":5,"big":4,"small":7,"speed":150,"dir":1},
+    {"level":6,"big":3,"small":6,"speed":200,"dir":-1},
+    {"level":7,"big":3,"small":7,"speed":200,"dir":1},
+    {"level":8,"big":3,"small":8,"speed":200,"dir":-1},
+    {"level":9,"big":4,"small":7,"speed":200,"dir":1},
+    {"level":10,"big":4,"small":7,"speed":200,"dir":-1},
+    {"level":11,"big":2,"small":7,"speed":250,"dir":1},
+    {"level":12,"big":3,"small":6,"speed":250,"dir":1},
+    {"level":13,"big":4,"small":6,"speed":250,"dir":1},
+    {"level":14,"big":5,"small":5,"speed":250,"dir":1},
+    {"level":15,"big":6,"small":5,"speed":250,"dir":1},
+    {"level":16,"big":6,"small":5,"speed":260,"dir":1},
+    {"level":17,"big":7,"small":3,"speed":260,"dir":1},
+    {"level":18,"big":7,"small":4,"speed":260,"dir":1},
+    {"level":19,"big":8,"small":3,"speed":260,"dir":1},
+    {"level":20,"big":6,"small":6,"speed":260,"dir":1}
+]

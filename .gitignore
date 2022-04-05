@@ -1,0 +1,15 @@
+build/
+library/
+temp/
+local/
+jsb-default/
+jsb-binary/
+jsb-link/
+web-desktop/
+web-mobile/
+runtime/
+build/
+jsb/
+export/
+
+.DS_Store

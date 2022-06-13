@@ -55,15 +55,8 @@ export default class Game extends cc.Component {
 
     start () {
         this.reloadBox();
-
-        let robot = this.nodeRobot.getComponent(Robot);
-        robot.setAddCallback( () => {
-            this.onAddPoints();
-        });
-        robot.setFailedCallback( () => {
-            this.onGameEnd();
-        });
-
+        this.nodeRobot.on('jump-ended',this.onAddPoints,this);
+        this.nodeRobot.on('jump-failed',this.onGameEnd,this);
         this.mIsPlaying = true;
     }
 
@@ -80,8 +73,7 @@ export default class Game extends cc.Component {
 
     reloadBox(){
         let boxMgr = this.getComponent(BoxManager);
-        //boxMgr.reloadAll();
-        boxMgr.reload();
+        boxMgr.reload(20);
 
         let robot = this.nodeRobot.getComponent(Robot);
         if(robot.getCurrent() == null){
@@ -151,7 +143,6 @@ export default class Game extends cc.Component {
     onClick(){
         this.nodeEnd.active = false;
         cc.director.loadScene('game');
-        
         cc.log(cc.director.getScene().name);
         
     }

@@ -23,8 +23,8 @@ export default class Robot extends cc.Component {
 	private nextNode: cc.Node = null; // 下一个节点
 	private offset: cc.Vec3 = cc.v3(11, 120); // 机器人与障碍物中心间隔
 	private mRobotFace: number = -1; // -1朝左，1朝右
-	private jumpCallback: any = null;
-	private _failed: Function = null;
+	
+
 	private _isJumping: boolean = false;
 	private point: number = 0;
 
@@ -45,9 +45,8 @@ export default class Robot extends cc.Component {
 	}
 
 	/**
-     * @description: 向右转
-
-     */
+    * @description: 向右转
+    */
 	turnRight() {
 		this.mRobotFace = RobotFace.Right;
 		this.node.getComponent(cc.Sprite).spriteFrame = this.spfRight;
@@ -74,14 +73,6 @@ export default class Robot extends cc.Component {
 
 	getCurrent() {
 		return this.currentNode;
-	}
-
-	setAddCallback(callback: any) {
-		this.jumpCallback = callback;
-	}
-
-	setFailedCallback(callback: any) {
-		this._failed = callback;
 	}
 
 	/**
@@ -136,10 +127,12 @@ export default class Robot extends cc.Component {
                 box.down(-this.getDownY(this.prevNode));
                 this.prevNode = null;
             }
+            
             //跳跃结束事件
-            if (this.jumpCallback != null) {
-                this.jumpCallback();
-            }
+            // if (this.jumpCallback != null) {
+            //     this.jumpCallback();
+            // }
+            this.node.emit('jump-ended');
             this.point++;
             this.txtPoints.string = `${this.point}`;
         })
@@ -156,9 +149,10 @@ export default class Robot extends cc.Component {
             .then(cc.jumpTo(0.2, cc.v2(targetPos), 30, 1))
             .by(0.5, { y: -this.getDownY(this.node) })
                     .call(() => {
-                        if (this._failed != null) {
-                            this._failed();
-                        }
+                        // if (this._failed != null) {
+                        //     this._failed();
+                        // }
+                        this.node.emit('jump-failed');
                     })
             .start();
 	}

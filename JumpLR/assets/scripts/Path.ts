@@ -1,4 +1,4 @@
-import NodeManager from "./NodePoolManager";
+import PathManager from "./PathPoolManager";
 
 const {ccclass, property} = cc._decorator;
 
@@ -60,7 +60,7 @@ export default class Path extends cc.Component {
         cc.tween(this.node)
         .by(0.4,{y:y})
         .call(()=>{
-            NodeManager.putBox(this.node);
+            PathManager.putBox(this.node);
         })
         .start();
     }

@@ -1,5 +1,5 @@
 import Path from "./Path";
-import NodeManager from "./NodePoolManager";
+import PathManager from "./PathPoolManager";
 
 const { ccclass, property } = cc._decorator;
 
@@ -42,7 +42,7 @@ export default class BoxManager extends cc.Component {
 	 * @description: 生成一个障碍物
 	 */
 	getBox() {
-		let box = NodeManager.getBox();
+		let box = PathManager.getBox();
 		if (box == null) {
 			box = cc.instantiate(this.prefabBox);
 		}
@@ -54,7 +54,7 @@ export default class BoxManager extends cc.Component {
 	 */
 	putBox(box: cc.Node) {
 		if (box != null) {
-			NodeManager.putBox(box);
+			PathManager.putBox(box);
 		}
 	}
 

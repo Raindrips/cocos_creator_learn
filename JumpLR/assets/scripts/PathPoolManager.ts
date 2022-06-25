@@ -2,7 +2,7 @@ const { ccclass, property } = cc._decorator;
 
 //节点池
 @ccclass
-export default class NodeManager {
+export default class PathManager {
 	private static boxNodePool: cc.NodePool = null;
 	
 

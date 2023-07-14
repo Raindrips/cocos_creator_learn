@@ -1,5 +1,5 @@
-import LevelData from "./model/LevelData";
-import LevelManager from "./model/LevelManager";
+import LevelData from "./data/LevelData";
+import LevelManager from "./manager/LevelManager";
 import { GameState } from "./utils/GameState";
 
 const { ccclass, property } = cc._decorator;

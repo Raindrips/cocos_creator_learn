@@ -18,8 +18,13 @@ export default class NewClass extends cc.Component {
             cc.error('other node is null');
         }
         this.other.x=this.node.width;
+
+        cc.game.on('game-over',this.stop,this);
     }
 
+    stop(){
+        this.enabled=false;
+    }
 
     update (dt) {
 
@@ -37,4 +42,6 @@ export default class NewClass extends cc.Component {
         this.node.x-=this.speed*dt;
         this.other.x-=this.speed*dt;
     }
+
+ 
 }

@@ -1,7 +1,7 @@
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class Pumple extends cc.Component {
 
     @property
     maxY:number=700;
@@ -42,5 +42,12 @@ export default class NewClass extends cc.Component {
         let tag=this.node.getChildByName('tag');
         tag.y+=y;
         tag.x=x;
+    }
+
+    stopMove(){
+        const rigids=this.node.getComponentsInChildren(cc.RigidBody);
+        for(const node of rigids){
+            node.linearVelocity=cc.v2();
+        }
     }
 }

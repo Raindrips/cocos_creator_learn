@@ -33,7 +33,7 @@ export default class NewClass extends cc.Component {
 
     onLoad () {
         this.tutorial.on(cc.Node.EventType.TOUCH_START,this.gameStart,this);
-        this.node.on('gameOver',this.gameOver,this);
+        cc.game.on('show-game-over',this.gameOver,this);
         this.node.on('addScore',this.addScore,this);
 
         

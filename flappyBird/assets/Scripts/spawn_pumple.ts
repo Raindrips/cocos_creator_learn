@@ -1,3 +1,4 @@
+import Pumple from "./pumple";
 
 const {ccclass, property} = cc._decorator;
 
@@ -14,6 +15,7 @@ export default class SpawnPumple extends cc.Component {
 
     onLoad () {
         this.node.on('startGame',this.startGame,this);
+        cc.game.on('game-over',this.stopPumple,this);
     }
 
     startGame(){
@@ -25,6 +27,16 @@ export default class SpawnPumple extends cc.Component {
         let pumple=cc.instantiate(this.pumplePrefab);
         this.pumpLayer.addChild(pumple);
         pumple.emit('init');
+    }
+
+    stopPumple(){
+        cc.log('stopPumple')
+        const children=this.pumpLayer.children;
+        for(const node of children){
+            const pumple=node.getComponent(Pumple);
+            pumple.stopMove();
+        }
+        this.unschedule(this.spawnPumple);
     }
 
     // update (dt) {}

@@ -39,14 +39,16 @@ export default class NewClass extends cc.Component {
     }
 
     gameOver() {
+        cc.log('游戏结束');
+        cc.audioEngine.playEffect(this.hitClip,false);
         this.isGameStart = false;  
         let rigid=this.node.getComponent(cc.RigidBody);
         rigid.enabledContactListener=false;
         rigid.angularVelocity=-360;
         this.node.parent.off(cc.Node.EventType.TOUCH_START, this.onTouchStart, this);
-
+        cc.game.emit('game-over');
         this.scheduleOnce(()=>{
-            this.UILayer.emit('gameOver');
+            cc.game.emit('show-game-over');
         },1);
     }
 
@@ -82,8 +84,7 @@ export default class NewClass extends cc.Component {
             return;
         }
         if (other.node.group == 'pumple') {
-            cc.log('游戏结束');
-            cc.audioEngine.playEffect(this.hitClip,false);
+          
             this.gameOver();
         }
         if (other.node.group == 'tag') {

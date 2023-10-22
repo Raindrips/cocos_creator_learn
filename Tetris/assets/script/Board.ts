@@ -24,14 +24,14 @@ export default class NewClass extends cc.Component {
   // private isStart: boolean = false; //
   private gridWidth: number = 0; //格子宽度
 
-  private pieceMap: cc.Node[][]; //棋盘地图
-  private nextMap: cc.Node[][]; //下一个方块的地图
+  private pieceNodeMap: cc.Node[][]; //棋盘地图
+  private nextNodeMap: cc.Node[][]; //下一个方块的地图
 
   private pieceData: number[][]; //地图数据
   private playerDate: number[][]; //玩家控制的方块数据
-  private playerPos: cc.Vec2; //玩家方块坐标
+  private playerOffset: cc.Vec2; //玩家方块坐标
 
-  private nextBlock: BlockType;
+  private nextBlockType: BlockType; //下一个方块的类型
 
   public onLoad() {
     this.node.on("move", this.playerMove, this);
@@ -41,10 +41,10 @@ export default class NewClass extends cc.Component {
   }
 
   start() {
-    this.init();
+    this.initGame();
   }
 
-  private init() {
+  private initGame() {
     this.initData();
     this.initView();
     this.initPlayer();
@@ -79,21 +79,21 @@ export default class NewClass extends cc.Component {
 
   private initView() {
     this.gridWidth = this.node.width / this.colsNum;
-    this.pieceMap = [];
+    this.pieceNodeMap = [];
     for (let y = 0; y < this.rowsNum; y++) {
-      this.pieceMap[y] = [];
+      this.pieceNodeMap[y] = [];
       for (let x = 0; x < this.colsNum; x++) {
         const node = this.createNode(x, y);
-        this.pieceMap[y][x] = node;
+        this.pieceNodeMap[y][x] = node;
         this.node.addChild(node);
       }
     }
-    this.nextMap = [];
+    this.nextNodeMap = [];
     for (let y = 0; y < 4; y++) {
-      this.nextMap[y] = [];
+      this.nextNodeMap[y] = [];
       for (let x = 0; x < 4; x++) {
         const node = this.createNode(x, y);
-        this.nextMap[y][x] = node;
+        this.nextNodeMap[y][x] = node;
         this.nextNode.addChild(node);
       }
     }
@@ -109,62 +109,53 @@ export default class NewClass extends cc.Component {
   }
 
   private initPlayer() {
-    this.playerPos = cc.v2(0, 0);
+    this.playerOffset = cc.v2(0, 0);
     this.playerDate = [];
-    this.nextBlock = this.randomBlock();
+    this.nextBlockType = this.getRandomBlock();
   }
 
   private drawView() {
-    // if(this.pieceMap.length==0||
-    // 	this.nextMap.length==0||
-    // 	this.pieceData.length==0){
-    // 	return;
-    // }
+
     this.clear();
     this.drawMatrix(this.pieceData);
-    this.drawMatrix(this.playerDate, this.playerPos);
+    this.drawMatrix(this.playerDate, this.playerOffset);
     this.drawNext();
   }
 
   private drawMatrix(matrix: number[][], v2: cc.Vec2 = cc.v2()) {
-    // for(let row of matrix){
-    // 	for(let value of row){
-
-    // 	}
-    // }
-    matrix.forEach((row, y) => {
-      row.forEach((value, x) => {
-				let vy = y + v2.y;
-				let vx = x + v2.x;
-        if (value !== 0) {       
+    for (let y = 0; y < matrix.length; y++) {
+      for (let x = 0; x < matrix[y].length; x++) {
+        let vy = y + v2.y;
+        let vx = x + v2.x;
+        let value = matrix[y][x];
+        if (value !== 0) {
           if (
             vy < 0 ||
             vx < 0 ||
-            vy >= this.pieceMap.length ||
-            vx >= this.pieceMap[0].length
-          ) {						
-            //continue
-						console.log(`y=${y} x=${x} lenx=${matrix.length} leny=${matrix[0].length} `)
-          } else {
-						this.setColor(this.pieceMap[vy][vx], value);
-						this.pieceMap[vy][vx].active = true;
+            vy >= this.pieceNodeMap.length ||
+            vx >= this.pieceNodeMap[0].length
+          ) {
+            continue;
           }
-					
+          this.setColor(this.pieceNodeMap[vy][vx], value);
+          this.pieceNodeMap[vy][vx].active = true;
         }
-      });
-    });
+      }
+    }
+
   }
 
   private drawNext() {
-    let next = this.createBlock(this.nextBlock);
-    next.forEach((row, y) => {
-      row.forEach((value, x) => {
-        this.setColor(this.nextMap[y][x], value);
-        this.nextMap[y][x].active = true;
-      });
-    });
+    let next = this.createBlock(this.nextBlockType);
+    for (let y = 0; y < next.length; y++) {
+      for (let x = 0; x < next[y].length; x++) {
+        this.setColor(this.nextNodeMap[y][x], next[y][x]);
+        this.nextNodeMap[y][x].active = true;
+      }
+    }
   }
 
+  // 设置颜色
   private setColor(node: cc.Node, index: number) {
     let colorString = this.jsonData.json[index.toString()];
     let color = cc.Color.fromHEX(node.color, colorString);
@@ -174,13 +165,13 @@ export default class NewClass extends cc.Component {
   private clear() {
     for (let y = 0; y < this.rowsNum; y++) {
       for (let x = 0; x < this.colsNum; x++) {
-        this.pieceMap[y][x].active = false;
+        this.pieceNodeMap[y][x].active = false;
       }
     }
 
     for (let y = 0; y < 4; y++) {
       for (let x = 0; x < 4; x++) {
-        this.nextMap[y][x].active = false;
+        this.nextNodeMap[y][x].active = false;
       }
     }
   }
@@ -194,15 +185,15 @@ export default class NewClass extends cc.Component {
     // 	timeinterval.isStart=false;
     //   return;
     // }
-    this.playerDate = this.createBlock(this.nextBlock);
-    this.playerPos.y = this.rowsNum - this.playerDate.length;
-    this.playerPos.x =
+    this.playerDate = this.createBlock(this.nextBlockType);
+    this.playerOffset.y = this.rowsNum - this.playerDate.length;
+    this.playerOffset.x =
       ((this.pieceData[0].length / 2) | 0) -
       ((this.playerDate[0].length / 2) | 0);
-    this.nextBlock = this.randomBlock();
+    this.nextBlockType = this.getRandomBlock();
   }
 
-  private randomBlock() {
+  private getRandomBlock() {
     let r = (Math.random() * 7) | 0;
     return r as BlockType;
   }
@@ -223,7 +214,7 @@ export default class NewClass extends cc.Component {
   //撞到方块
   private collide(): boolean {
     const p = this.playerDate;
-    const o = this.playerPos;
+    const o = this.playerOffset;
     for (let y = 0; y < p.length; y++) {
       for (let x = 0; x < p[y].length; x++) {
         if (
@@ -242,7 +233,7 @@ export default class NewClass extends cc.Component {
     this.playerDate.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value !== 0) {
-          this.pieceData[y + this.playerPos.y][x + this.playerPos.x] = value;
+          this.pieceData[y + this.playerOffset.y][x + this.playerOffset.x] = value;
         }
       });
     });
@@ -279,11 +270,11 @@ export default class NewClass extends cc.Component {
   }
 
   public playerDrop() {
-    this.playerPos.y--;
+    this.playerOffset.y--;
 
     if (this.collide()) {
       console.log("collide");
-      this.playerPos.y++;
+      this.playerOffset.y++;
       this.merge();
       this.playerReset();
       this.arenaSweep();
@@ -291,24 +282,24 @@ export default class NewClass extends cc.Component {
   }
 
   public playerRotate(dir: number) {
-    const pos = this.playerPos.x;
+    const pos = this.playerOffset.x;
     let offset = 1;
     this.rotate(this.playerDate, -dir);
     while (this.collide()) {
-      this.playerPos.x += offset;
+      this.playerOffset.x += offset;
       offset = -(offset + (offset > 0 ? 1 : -1));
       if (offset > this.playerDate.length) {
         this.rotate(this.playerDate, dir);
-        this.playerPos.x = pos;
+        this.playerOffset.x = pos;
         return;
       }
     }
   }
 
   public playerMove(offset: number) {
-    this.playerPos.x += offset;
+    this.playerOffset.x += offset;
     if (this.collide()) {
-      this.playerPos.x -= offset;
+      this.playerOffset.x -= offset;
     }
   }
 }

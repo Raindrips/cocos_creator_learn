@@ -740,7 +740,7 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 217.85,
+      "width": 240.12,
       "height": 100.8
     },
     "_anchorPoint": {
@@ -752,7 +752,7 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -250.972,
+        -240.473,
         414.396,
         0,
         0,
@@ -801,7 +801,7 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
-    "_styleFlags": 0,
+    "_styleFlags": 1,
     "_underlineHeight": 0,
     "_N$horizontalAlign": 1,
     "_N$verticalAlign": 1,
@@ -847,8 +847,8 @@
       "__type__": "TypedArray",
       "ctor": "Float64Array",
       "array": [
-        -134.648,
-        400,
+        -113.65,
+        412.599,
         0,
         0,
         0,
@@ -896,10 +896,10 @@
     "_isSystemFontUsed": true,
     "_spacingX": 0,
     "_batchAsBitmap": false,
-    "_styleFlags": 0,
+    "_styleFlags": 1,
     "_underlineHeight": 0,
     "_N$horizontalAlign": 0,
-    "_N$verticalAlign": 0,
+    "_N$verticalAlign": 1,
     "_N$fontFamily": "Arial",
     "_N$overflow": 0,
     "_N$cacheMode": 0,
